@@ -1,9 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "GameState.h"
+#include "TextHistory.h"
 class GameDrawer
 {
 public:
-	void DrawGame(sf::RenderWindow& window, GameState& gameState);
+	void drawGame(sf::RenderWindow& window, std::vector<sf::Drawable*>& drawables);
 };
 

@@ -1,18 +1,37 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System/String.hpp>
 #include "GameDrawer.h"
-#include "GameManager.h"
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1280, 720), "cigfeel");
-    GameManager gameManager;
-    GameState gameState(480);
+
     GameDrawer gameDrawer;
+    TextHistory textHistory(30);
+
+
+    std::vector<sf::Drawable*> drawables;
+    drawables.push_back(&textHistory);
 
     while (window.isOpen())
     {
-        
-        gameDrawer.DrawGame(window, gameState);
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+            if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Enter)
+            {
+                textHistory.submit();
+            }
+            else if (event.type == sf::Event::TextEntered)
+            {
+                textHistory.append(sf::String(event.text.unicode));
+            }
+        }
+
+        gameDrawer.drawGame(window, drawables);
     }
 
     return 0;
