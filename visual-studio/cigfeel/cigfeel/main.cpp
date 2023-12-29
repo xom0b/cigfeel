@@ -2,13 +2,17 @@
 #include <SFML/System/String.hpp>
 #include "GameDrawer.h"
 
+#include <filesystem>
+#include <iostream>
+
 int main()
 {
+    std::cout << "my directory is :" << std::filesystem::current_path() << "\n";
+
     sf::RenderWindow window(sf::VideoMode(1280, 720), "cigfeel");
 
     GameDrawer gameDrawer;
     TextHistory textHistory(30);
-
 
     std::vector<sf::Drawable*> drawables;
     drawables.push_back(&textHistory);
