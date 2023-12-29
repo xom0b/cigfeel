@@ -2,22 +2,18 @@
 #include <iostream>
 #include <windows.h>
 
-TextHistory::TextHistory(size_t bufferSize) : m_bufferSize(bufferSize), m_currentIndex(0)
+TextHistory::TextHistory(size_t bufferSize, sf::Vector2f position, sf::Font& font) 
+	: m_currentIndex(0), 
+	  m_bufferSize(bufferSize), 
+	  m_inputBuffer(new std::string[bufferSize])
 {
-	m_inputBuffer = new std::string[bufferSize];
-	if (!font.loadFromFile("fonts\\Junicode-Regular.ttf"))
-	{
-		std::cout << "failed to load font" << std::endl;
-	}
-	else
-	{
-		std::cout << "loaded font" << std::endl;
-	}
+	setPosition(position);
+	this->font = font;
 }
 
 TextHistory::~TextHistory()
 {
-	delete m_inputBuffer;
+	delete[] m_inputBuffer;
 }
 
 void TextHistory::submit()
@@ -32,17 +28,22 @@ void TextHistory::append(std::string s)
 
 void TextHistory::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.transform *= getTransform();
+
 	std::string output = "";
+	output += m_inputBuffer[m_currentIndex] + "\n";
+
 	int indexStep = m_currentIndex;
-	for (size_t i = m_bufferSize - 1; i >= 0; i--)
+	for (size_t i = 0; i < m_bufferSize; i++)
 	{
-		output += (m_inputBuffer[i] + "\n");
-		i = (i + 1) % m_bufferSize;
+		output += m_inputBuffer[i] + "\n";
 	}
 
 	sf::Text text;
+	text.setPosition(getPosition());
 	text.setFont(font);
 	text.setFillColor(sf::Color::White);
-	text.setCharacterSize(16);
+	text.setCharacterSize(24);
 	text.setString(output);
+	target.draw(text);
 }

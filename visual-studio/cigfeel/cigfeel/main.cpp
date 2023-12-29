@@ -1,18 +1,28 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/String.hpp>
 #include "GameDrawer.h"
-
-#include <filesystem>
+#include "TextInputField.h"
 #include <iostream>
 
 int main()
 {
-    std::cout << "my directory is :" << std::filesystem::current_path() << "\n";
-
     sf::RenderWindow window(sf::VideoMode(1280, 720), "cigfeel");
 
     GameDrawer gameDrawer;
-    TextHistory textHistory(30);
+    sf::Font font;
+    int fontSize = 24;
+
+    if (!font.loadFromFile("fonts\\Junicode-Regular.ttf"))
+    {
+        std::cout << "failed to load font" << std::endl;
+    }
+    else
+    {
+        std::cout << "loaded font" << std::endl;
+    }
+
+    TextInputField textInputField(sf::Vector2f(240, 0), font, sf::Color::White, fontSize);
+    TextHistory textHistory(30, sf::Vector2f(240, 0), font);
 
     std::vector<sf::Drawable*> drawables;
     drawables.push_back(&textHistory);
@@ -27,11 +37,13 @@ int main()
 
             if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Enter)
             {
+                textHistory.append(textInputField.getInput());
                 textHistory.submit();
+                textInputField.clearInput();
             }
-            else if (event.type == sf::Event::TextEntered)
+            else
             {
-                textHistory.append(sf::String(event.text.unicode));
+                textInputField.processEvent(event);
             }
         }
 
