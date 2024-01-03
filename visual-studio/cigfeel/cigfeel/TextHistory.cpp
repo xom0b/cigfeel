@@ -2,13 +2,14 @@
 #include <iostream>
 #include <windows.h>
 
-TextHistory::TextHistory(size_t bufferSize, sf::Vector2f position, sf::Font& font) 
+TextHistory::TextHistory(size_t bufferSize, sf::Vector2f position, sf::Font& font, int textSpacing) 
 	: m_currentIndex(0), 
 	  m_bufferSize(bufferSize), 
-	  m_inputBuffer(new std::string[bufferSize])
+	  m_inputBuffer(new std::string[bufferSize]),
+	  m_textSpacing(textSpacing)
 {
 	setPosition(position);
-	this->font = font;
+	this->m_font = font;
 }
 
 TextHistory::~TextHistory()
@@ -30,20 +31,17 @@ void TextHistory::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 
-	std::string output = "";
-	output += m_inputBuffer[m_currentIndex] + "\n";
+	sf::Text text;
+	text.setFont(m_font);
+	text.setFillColor(sf::Color::White);
+	text.setCharacterSize(24);
+	sf::Vector2f initialPosition = getPosition();
 
 	int indexStep = m_currentIndex;
 	for (size_t i = 0; i < m_bufferSize; i++)
 	{
-		output += m_inputBuffer[i] + "\n";
+		text.setString(m_inputBuffer[i]);
+		text.setPosition(initialPosition + sf::Vector2f(0, i * m_textSpacing));
+		target.draw(text);
 	}
-
-	sf::Text text;
-	text.setPosition(getPosition());
-	text.setFont(font);
-	text.setFillColor(sf::Color::White);
-	text.setCharacterSize(24);
-	text.setString(output);
-	target.draw(text);
 }

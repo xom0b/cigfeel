@@ -21,11 +21,12 @@ int main()
         std::cout << "loaded font" << std::endl;
     }
 
-    TextInputField textInputField(sf::Vector2f(240, 0), font, sf::Color::White, fontSize);
-    TextHistory textHistory(30, sf::Vector2f(240, 0), font);
+    TextInputField textInputField(sf::Vector2f(240, 610), font, sf::Color::White, fontSize);
+    TextHistory textHistory(24, sf::Vector2f(240, 0), font, fontSize);
 
     std::vector<sf::Drawable*> drawables;
     drawables.push_back(&textHistory);
+    drawables.push_back(&textInputField);
 
     while (window.isOpen())
     {
