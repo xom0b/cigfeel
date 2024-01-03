@@ -1,15 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <string.h>
+#include "TextStyle.h"
 
 class TextInputField : public sf::Drawable, public sf::Transformable
 {
-	sf::Font m_font;
 	std::string m_input;
-	sf::Color m_color;
-	int m_size;
+	TextStyle m_textStyle;
+
 public:
-	TextInputField(sf::Vector2f position, sf::Font& font, sf::Color color, int size);
+	TextInputField(sf::Vector2f position, TextStyle textStyle);
 	void processEvent(sf::Event event);
 	void clearInput();
 	std::string getInput();

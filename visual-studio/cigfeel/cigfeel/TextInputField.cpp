@@ -2,7 +2,7 @@
 #include "TextUtils.h"
 #include <iostream>
 
-TextInputField::TextInputField(sf::Vector2f position, sf::Font& font, sf::Color color, int size) : m_font(font), m_color(color), m_size(size)
+TextInputField::TextInputField(sf::Vector2f position, TextStyle textStyle) : m_textStyle(textStyle)
 {
 	setPosition(position);
 }
@@ -48,9 +48,9 @@ void TextInputField::draw(sf::RenderTarget& target, sf::RenderStates states) con
 	states.transform *= getTransform();
 	sf::Text text;
 	text.setPosition(getPosition());
-	text.setFont(m_font);
-	text.setFillColor(m_color);
-	text.setCharacterSize(m_size);
+	text.setFont(m_textStyle.font);
+	text.setFillColor(m_textStyle.color);
+	text.setCharacterSize(m_textStyle.size);
 	text.setString(m_input);
 	target.draw(text);
 }

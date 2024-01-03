@@ -2,6 +2,7 @@
 #include <SFML/System/String.hpp>
 #include "GameDrawer.h"
 #include "TextInputField.h"
+#include "TextStyle.h"
 #include <iostream>
 
 int main()
@@ -9,10 +10,9 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1280, 720), "cigfeel");
 
     GameDrawer gameDrawer;
-    sf::Font font;
-    int fontSize = 24;
+    sf::Font textFont;
 
-    if (!font.loadFromFile("fonts\\Junicode-Regular.ttf"))
+    if (!textFont.loadFromFile("fonts\\Junicode-Regular.ttf"))
     {
         std::cout << "failed to load font" << std::endl;
     }
@@ -21,8 +21,15 @@ int main()
         std::cout << "loaded font" << std::endl;
     }
 
-    TextInputField textInputField(sf::Vector2f(240, 610), font, sf::Color::White, fontSize);
-    TextHistory textHistory(24, sf::Vector2f(240, 0), font, fontSize);
+    int textSize = 24;
+    sf::Color textColor = sf::Color::White;
+    TextStyle textStyle(textFont, textColor, textSize);
+
+    TextInputField textInputField(sf::Vector2f(240, 610), textStyle);
+
+    int textHistoryBufferSize = 24;
+    int textHistoryHorizontalSize = 24;
+    TextHistory textHistory(textHistoryBufferSize, sf::Vector2f(240, 0), textStyle, textHistoryHorizontalSize);
 
     std::vector<sf::Drawable*> drawables;
     drawables.push_back(&textHistory);
