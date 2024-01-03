@@ -27,6 +27,9 @@
     <ClCompile Include="TextInputField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameDrawer.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextInputField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
