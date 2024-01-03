@@ -1,18 +1,21 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/String.hpp>
-#include "GameDrawer.h"
+#include "GameManager.h"
 #include "TextInputField.h"
+#include "TextHistory.h"
 #include "TextStyle.h"
+#include "Updatable.h"
+#include "SFML/System/Time.hpp"
 #include <iostream>
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1280, 720), "cigfeel");
 
-    GameDrawer gameDrawer;
+    GameManager gameManager;
     sf::Font textFont;
 
-    if (!textFont.loadFromFile("fonts\\Junicode-Regular.ttf"))
+    if (!textFont.loadFromFile("fonts/Junicode-Regular.ttf"))
     {
         std::cout << "failed to load font" << std::endl;
     }
@@ -35,6 +38,10 @@ int main()
     drawables.push_back(&textHistory);
     drawables.push_back(&textInputField);
 
+    std::vector<Updateable*> updateables;
+    updateables.push_back(&textInputField);
+
+    sf::Clock clock;
     while (window.isOpen())
     {
         sf::Event event;
@@ -55,7 +62,8 @@ int main()
             }
         }
 
-        gameDrawer.drawGame(window, drawables);
+        sf::Time deltaTime = clock.restart();
+        gameManager.updateGame(window, updateables, drawables, deltaTime);
     }
 
     return 0;
