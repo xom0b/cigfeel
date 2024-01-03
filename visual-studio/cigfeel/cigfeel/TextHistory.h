@@ -9,7 +9,7 @@ class TextHistory : public sf::Drawable, public sf::Transformable
 	size_t m_bufferSize;
 	std::string* m_inputBuffer;
 	TextStyle m_textStyle;
-	int m_horizontalSpacing;
+	int m_verticalSpacing;
 
 public:
 	TextHistory(size_t bufferSize, sf::Vector2f position, TextStyle textStyle, int horizontalSpacing);

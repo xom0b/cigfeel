@@ -28,8 +28,8 @@ int main()
     TextInputField textInputField(sf::Vector2f(240, 610), textStyle);
 
     int textHistoryBufferSize = 24;
-    int textHistoryHorizontalSize = 24;
-    TextHistory textHistory(textHistoryBufferSize, sf::Vector2f(240, 0), textStyle, textHistoryHorizontalSize);
+    int textHistoryVerticalSpacing = 24;
+    TextHistory textHistory(textHistoryBufferSize, sf::Vector2f(240, 0), textStyle, textHistoryVerticalSpacing);
 
     std::vector<sf::Drawable*> drawables;
     drawables.push_back(&textHistory);
