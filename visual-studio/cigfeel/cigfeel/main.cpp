@@ -4,6 +4,7 @@
 #include "TextInputField.h"
 #include "TextHistory.h"
 #include "TextStyle.h"
+#include "TextEntity.h"
 #include "Updatable.h"
 #include "SFML/System/Time.hpp"
 #include <iostream>
@@ -15,7 +16,7 @@ int main()
     GameManager gameManager;
     sf::Font textFont;
 
-    if (!textFont.loadFromFile("fonts/Junicode-Regular.ttf"))
+    if (!textFont.loadFromFile("fonts/JunicodeVF-Roman.ttf"))
     {
         std::cout << "failed to load font" << std::endl;
     }
@@ -24,7 +25,7 @@ int main()
         std::cout << "loaded font" << std::endl;
     }
 
-    int textSize = 24;
+    int textSize = 60;
     sf::Color textColor = sf::Color::White;
     TextStyle textStyle(textFont, textColor, textSize);
 
@@ -34,9 +35,14 @@ int main()
     int textHistoryVerticalSpacing = 24;
     TextHistory textHistory(textHistoryBufferSize, sf::Vector2f(240, 0), textStyle, textHistoryVerticalSpacing);
 
+    std::basic_string<sf::Uint32> unicode = { 0x16E0, 0x0020, 0x16E1, 0x0020, 0x16E2, 0x0020, 0x16E3, 0x0020, 0x16E4};
+    sf::String unicodeString(unicode);
+    TextEntity textEntity(unicodeString, sf::Vector2f(10, 10), textStyle);
+
     std::vector<sf::Drawable*> drawables;
     drawables.push_back(&textHistory);
     drawables.push_back(&textInputField);
+    drawables.push_back(&textEntity);
 
     std::vector<Updateable*> updateables;
     updateables.push_back(&textInputField);
