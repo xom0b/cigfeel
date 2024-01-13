@@ -1,0 +1,62 @@
+#include "TextInputController.h"
+
+TextInputController::TextInputController()
+{
+    textFont = new sf::Font;
+
+    if (!textFont->loadFromFile("fonts/JunicodeVF-Roman.ttf"))
+    {
+        std::cout << "failed to load font" << std::endl;
+    }
+    else
+    {
+        std::cout << "loaded font" << std::endl;
+    }
+
+    int textSize = 24;
+    sf::Color textColor = sf::Color::White;
+    TextStyle textStyle(textFont, textColor, textSize);
+
+    textInputField = new TextInputField(sf::Vector2f(240, 610), textStyle);
+
+    int textHistoryBufferSize = 24;
+    int textHistoryVerticalSpacing = 24;
+    textHistory = new TextHistory(textHistoryBufferSize, sf::Vector2f(240, 0), textStyle, textHistoryVerticalSpacing);
+}
+
+TextInputController::~TextInputController()
+{
+    delete textFont;
+    delete textInputField;
+    delete textHistory;
+}
+
+void TextInputController::processEvent(sf::Event event)
+{
+    if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Enter)
+    {
+        std::string input = textInputField->getInput();
+        if (input.length() > 0)
+        {
+            textHistory->append(textInputField->getInput());
+            textHistory->submit();
+            textInputField->clearInput();
+        }
+    }
+    else
+    {
+        textInputField->processEvent(event);
+    }
+}
+
+void TextInputController::update(sf::Time deltaTime)
+{
+    textInputField->update(deltaTime);
+}
+
+void TextInputController::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    textHistory->draw(target, states);
+    textInputField->draw(target, states);
+    
+}

@@ -3,5 +3,5 @@
 class Updateable
 {
 public:
-	virtual void update(sf::Time time) = 0;
+	virtual void update(sf::Time deltaTime) = 0;
 };

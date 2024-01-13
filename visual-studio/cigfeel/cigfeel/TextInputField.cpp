@@ -65,7 +65,7 @@ void TextInputField::draw(sf::RenderTarget& target, sf::RenderStates states) con
 	// draw text
 	sf::Text text;
 	text.setPosition(getPosition());
-	text.setFont(m_textStyle.font);
+	text.setFont(*m_textStyle.font);
 	text.setFillColor(m_textStyle.color);
 	text.setCharacterSize(m_textStyle.size);
 	text.setString(m_input + " ");

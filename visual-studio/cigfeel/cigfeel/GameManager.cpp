@@ -1,19 +1,26 @@
 #include "GameManager.h"
 #include <iostream>
 
-void GameManager::updateGame(sf::RenderWindow& window, std::vector<Updateable*> updateables, std::vector<sf::Drawable*>& drawables, sf::Time deltaTime)
+void GameManager::input(std::vector<Controller*>& controllers, sf::Event event)
 {
-	for (size_t i = 0; i < updateables.size(); i++)
+	for (Controller* controller : controllers)
 	{
-		updateables[i]->update(deltaTime);
+		controller->processEvent(event);
 	}
+}
 
-	window.clear();
-
-	for (size_t i = 0; i < drawables.size(); i++)
+void GameManager::update(std::vector<Updateable*>& updateables, sf::Time deltaTime)
+{
+	for (Updateable* updateable : updateables)
 	{
-		window.draw(*drawables[i]);
+		updateable->update(deltaTime);
 	}
+}
 
-	window.display();
+void GameManager::draw(std::vector<sf::Drawable*>& drawables, sf::RenderWindow& window)
+{
+	for (sf::Drawable* drawable : drawables)
+	{
+		window.draw(*drawable);
+	}
 }

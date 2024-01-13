@@ -143,21 +143,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DebugDrawer.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="TextEntity.cpp" />
     <ClCompile Include="TextHistory.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TextInputController.cpp" />
     <ClCompile Include="TextInputField.cpp" />
     <ClCompile Include="TextUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="DebugDrawer.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="TextEntity.h" />
     <ClInclude Include="TextHistory.h" />
+    <ClInclude Include="TextInputController.h" />
     <ClInclude Include="TextInputField.h" />
     <ClInclude Include="TextStyle.h" />
     <ClInclude Include="TextUtils.h" />
     <ClInclude Include="Updatable.h" />
+    <ClInclude Include="WindowMacros.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,12 +19,12 @@ TextHistory::~TextHistory()
 
 void TextHistory::submit()
 {
-	m_currentIndex = (m_currentIndex + 1) % (m_bufferSize - 1);
+	m_currentIndex = (m_currentIndex + 1) % (m_bufferSize);
 }
 
 void TextHistory::append(std::string s)
 {
-	m_inputBuffer[m_currentIndex] += s;
+	m_inputBuffer[m_currentIndex] = s;
 }
 
 void TextHistory::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -32,7 +32,7 @@ void TextHistory::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	
 	sf::Text text;
-	text.setFont(m_textStyle.font);
+	text.setFont(*m_textStyle.font);
 	text.setFillColor(m_textStyle.color);
 	text.setCharacterSize(m_textStyle.size);
 	sf::Vector2f initialPosition = getPosition();
