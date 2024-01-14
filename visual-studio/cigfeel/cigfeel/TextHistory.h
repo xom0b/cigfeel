@@ -1,6 +1,9 @@
 #pragma once
 #include <string.h>
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
+
 #include "TextStyle.h"
 
 class TextHistory : public sf::Drawable, public sf::Transformable
@@ -10,9 +13,12 @@ class TextHistory : public sf::Drawable, public sf::Transformable
 	std::string* m_inputBuffer;
 	TextStyle m_textStyle;
 	int m_verticalSpacing;
+	sf::IntRect m_rect;
+	sf::Vector2i m_padding;
 
+	int wrap(int step, int maxExclusive) const;
 public:
-	TextHistory(size_t bufferSize, sf::Vector2f position, TextStyle textStyle, int horizontalSpacing);
+	TextHistory(size_t bufferSize, sf::Vector2f position, TextStyle textStyle, int verticalSpacing, sf::IntRect rect, sf::Vector2i padding);
 	~TextHistory();
 	void submit();
 	void append(std::string s);

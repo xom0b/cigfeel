@@ -5,6 +5,9 @@
 #include "TextStyle.h"
 #include "TextInputField.h"
 #include "TextHistory.h"
+#include "TextMacros.h"
+#include "WindowMacros.h"
+
 class TextInputController : public Controller, public Updateable, public sf::Drawable
 {
 	sf::Font* textFont;

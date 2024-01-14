@@ -160,6 +160,7 @@
     <ClInclude Include="TextHistory.h" />
     <ClInclude Include="TextInputController.h" />
     <ClInclude Include="TextInputField.h" />
+    <ClInclude Include="TextMacros.h" />
     <ClInclude Include="TextStyle.h" />
     <ClInclude Include="TextUtils.h" />
     <ClInclude Include="Updatable.h" />
