@@ -1,6 +1,7 @@
 #pragma once
-#include <string.h>
 #include <iostream>
+#include <string>
+#include <sstream>
 
 #include <SFML/Graphics.hpp>
 
@@ -8,6 +9,7 @@
 
 class TextHistory : public sf::Drawable, public sf::Transformable
 {
+	mutable sf::Text m_text;
 	size_t m_currentIndex;
 	size_t m_bufferSize;
 	std::string* m_inputBuffer;
@@ -17,11 +19,11 @@ class TextHistory : public sf::Drawable, public sf::Transformable
 	sf::Vector2i m_padding;
 
 	int wrap(int step, int maxExclusive) const;
+	std::vector<std::string> splitToLines(std::string string, int maxWidth) const;
 public:
 	TextHistory(size_t bufferSize, sf::Vector2f position, TextStyle textStyle, int verticalSpacing, sf::IntRect rect, sf::Vector2i padding);
 	~TextHistory();
-	void submit();
-	void append(std::string s);
+	void add(std::string s);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

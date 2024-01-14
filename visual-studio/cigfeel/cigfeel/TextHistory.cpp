@@ -10,6 +10,10 @@ TextHistory::TextHistory(size_t bufferSize, sf::Vector2f position, TextStyle tex
 	  m_padding(padding)
 {
 	setPosition(position); 
+
+	m_text.setFont(*m_textStyle.font);
+	m_text.setFillColor(m_textStyle.color);
+	m_text.setCharacterSize(m_textStyle.size);
 }
 
 TextHistory::~TextHistory()
@@ -17,36 +21,36 @@ TextHistory::~TextHistory()
 	delete[] m_inputBuffer;
 }
 
-void TextHistory::submit()
+void TextHistory::add(std::string s)
 {
-	m_currentIndex = (m_currentIndex + 1) % (m_bufferSize);
-}
+	std::vector<std::string> sWithNewLines = splitToLines(s, 100);
 
-void TextHistory::append(std::string s)
-{
-	m_inputBuffer[m_currentIndex] = s;
+	for (std::string sWithNewLine : sWithNewLines)
+	{
+		m_inputBuffer[m_currentIndex] = sWithNewLine;
+		m_currentIndex = (m_currentIndex + 1) % (m_bufferSize);
+	}
 }
 
 void TextHistory::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 	
-	sf::Text text;
-	text.setFont(*m_textStyle.font);
-	text.setFillColor(m_textStyle.color);
-	text.setCharacterSize(m_textStyle.size);
-	int initialY = m_rect.height - (m_textStyle.size + m_verticalSpacing) - m_padding.y;
-	int initialX = getPosition().x;
+	int yPosStep = m_rect.height - m_padding.y;
+	int xPosStep = getPosition().x;
 
 	int indexStep = wrap(m_currentIndex, m_bufferSize);
 	for (int i = 0; i < m_bufferSize; i++)
 	{
-		text.setString(m_inputBuffer[indexStep]);
+		std::string line = m_inputBuffer[indexStep];
+		m_text.setString(line);
 
-		sf::Vector2f position(initialX, initialY - i * (m_textStyle.size + m_verticalSpacing));
-		text.setPosition(position);
+		yPosStep -= m_verticalSpacing;
+
+		sf::Vector2f position(xPosStep, yPosStep);
+		m_text.setPosition(position);
 		
-		target.draw(text);
+		target.draw(m_text);
 
 		indexStep = wrap(indexStep, m_bufferSize);
 	}
@@ -62,4 +66,48 @@ int TextHistory::wrap(int step, int maxExclusive) const
 	}
 
 	return decremented;
+}
+
+std::vector<std::string> TextHistory::splitToLines(std::string string, int maxWidth) const
+{
+	std::vector<std::string> stringLines;
+	int maxWidthStep = m_rect.left + maxWidth;
+	m_text.setString(string);
+
+	int cutIndex = 0;
+	for (size_t i = 0; i < string.length(); i++)
+	{
+		int currentCharacterPos = m_text.findCharacterPos(i).x;
+		if (currentCharacterPos > maxWidthStep)
+		{
+			int spaceIndex = string.substr(0, i).find_last_of(" ");
+
+			if (spaceIndex >= 0)
+			{
+				string[spaceIndex] = '\n';
+				cutIndex = spaceIndex + 1;
+
+				int positionOffset = currentCharacterPos - m_text.findCharacterPos(spaceIndex).x;
+				maxWidthStep -= positionOffset;
+			}
+			else
+			{
+				string.insert(i - 1, "-\n");
+				cutIndex = i + 1;
+			}
+
+			maxWidthStep += maxWidth;
+		}
+	}
+
+	
+	std::istringstream stream(string);
+	std::string token;
+
+	while (std::getline(stream, token))
+	{
+		stringLines.push_back(token);
+	}
+
+	return stringLines;
 }

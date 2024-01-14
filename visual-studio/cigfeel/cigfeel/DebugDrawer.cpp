@@ -9,6 +9,7 @@ DebugDrawer::DebugDrawer()
 
 	guideRect = sf::IntRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	guideSprite.setTexture(guideTexture);
+	guideSprite.setPosition(sf::Vector2f(100, 0));
 }
 
 void DebugDrawer::draw(sf::RenderWindow& renderWindow)

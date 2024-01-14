@@ -41,8 +41,7 @@ void TextInputController::processEvent(sf::Event event)
         std::string input = textInputField->getInput();
         if (input.length() > 0)
         {
-            textHistory->append(textInputField->getInput());
-            textHistory->submit();
+            textHistory->add(textInputField->getInput());
             textInputField->clearInput();
         }
     }
