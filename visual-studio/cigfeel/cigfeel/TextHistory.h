@@ -6,23 +6,19 @@
 #include <SFML/Graphics.hpp>
 
 #include "TextStyle.h"
+#include "TextBlock.h"
+#include "LayoutMacros.h"
 
 class TextHistory : public sf::Drawable, public sf::Transformable
 {
-	mutable sf::Text m_text;
-	sf::IntRect m_rect;
-	sf::Vector2i m_padding;
-	size_t m_currentIndex;
-	size_t m_bufferSize;
-	std::string* m_inputBuffer;
+	sf::FloatRect m_bounds;
+	sf::Vector2f m_padding;
 	TextStyle m_textStyle;
 	int m_verticalSpacing;
+	mutable std::vector<TextBlock> m_textBlocks;
 
-	int wrap(int step, int maxExclusive) const;
-	std::vector<std::string> splitToLines(std::string string, int maxWidth) const;
 public:
-	TextHistory(sf::IntRect rect, sf::Vector2i padding, size_t bufferSize, TextStyle textStyle, int verticalSpacing);
-	~TextHistory();
+	TextHistory(sf::FloatRect bounds, sf::Vector2f padding, TextStyle textStyle, int verticalSpacing);
 	void add(std::string s);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

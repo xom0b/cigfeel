@@ -23,9 +23,8 @@ TextInputController::TextInputController()
         textStyle);
 
     textHistory = new TextHistory(
-        sf::IntRect(TEXT_HISTORY_X, TEXT_HISTORY_Y, TEXT_HISTORY_WIDTH, TEXT_HISTORY_HEIGHT),
-        sf::Vector2i(TEXT_HISTORY_PADDING_X, TEXT_HISTORY_PADDING_Y),
-        TEXT_HISTORY_BUFFER_SIZE,
+        sf::FloatRect(TEXT_HISTORY_X, TEXT_HISTORY_Y, TEXT_HISTORY_WIDTH, TEXT_HISTORY_HEIGHT),
+        sf::Vector2f(TEXT_HISTORY_PADDING_X, TEXT_HISTORY_PADDING_Y),
         textStyle, 
         TEXT_HISTORY_SPACING_Y);
 }
@@ -63,5 +62,4 @@ void TextInputController::draw(sf::RenderTarget& target, sf::RenderStates states
 {
     textHistory->draw(target, states);
     textInputField->draw(target, states);
-    
 }

@@ -145,6 +145,8 @@
   <ItemGroup>
     <ClCompile Include="DebugDrawer.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="RichText.cpp" />
+    <ClCompile Include="TextBlock.cpp" />
     <ClCompile Include="TextEntity.cpp" />
     <ClCompile Include="TextHistory.cpp" />
     <ClCompile Include="main.cpp" />
@@ -156,6 +158,8 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="DebugDrawer.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="RichText.h" />
+    <ClInclude Include="TextBlock.h" />
     <ClInclude Include="TextEntity.h" />
     <ClInclude Include="TextHistory.h" />
     <ClInclude Include="TextInputController.h" />
