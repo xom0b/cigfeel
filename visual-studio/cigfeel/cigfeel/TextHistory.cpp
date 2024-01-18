@@ -1,6 +1,6 @@
 #include "TextHistory.h"
 
-TextHistory::TextHistory(size_t bufferSize, sf::Vector2f position, TextStyle textStyle, int verticalSpacing, sf::IntRect rect, sf::Vector2i padding) 
+TextHistory::TextHistory(sf::IntRect rect, sf::Vector2i padding, size_t bufferSize, TextStyle textStyle, int verticalSpacing)
 	: m_currentIndex(0), 
 	  m_bufferSize(bufferSize), 
 	  m_inputBuffer(new std::string[bufferSize]),
@@ -9,8 +9,7 @@ TextHistory::TextHistory(size_t bufferSize, sf::Vector2f position, TextStyle tex
 	  m_rect(rect),
 	  m_padding(padding)
 {
-	setPosition(position); 
-
+	setPosition(sf::Vector2f(m_rect.getPosition())); 
 	m_text.setFont(*m_textStyle.font);
 	m_text.setFillColor(m_textStyle.color);
 	m_text.setCharacterSize(m_textStyle.size);
@@ -23,7 +22,7 @@ TextHistory::~TextHistory()
 
 void TextHistory::add(std::string s)
 {
-	std::vector<std::string> sWithNewLines = splitToLines(s, 100);
+	std::vector<std::string> sWithNewLines = splitToLines(s, 600);
 
 	for (std::string sWithNewLine : sWithNewLines)
 	{
@@ -37,7 +36,7 @@ void TextHistory::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	
 	int yPosStep = m_rect.height - m_padding.y;
-	int xPosStep = getPosition().x;
+	int xPosStep = getPosition().x + m_padding.x;
 
 	int indexStep = wrap(m_currentIndex, m_bufferSize);
 	for (int i = 0; i < m_bufferSize; i++)
@@ -71,7 +70,7 @@ int TextHistory::wrap(int step, int maxExclusive) const
 std::vector<std::string> TextHistory::splitToLines(std::string string, int maxWidth) const
 {
 	std::vector<std::string> stringLines;
-	int maxWidthStep = m_rect.left + maxWidth;
+	int maxWidthStep = m_rect.left + maxWidth - m_padding.x;
 	m_text.setString(string);
 
 	int cutIndex = 0;

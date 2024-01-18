@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Macros">
+      <UniqueIdentifier>{5aece560-7150-4d66-9a3e-1f8722cae7a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Text">
+      <UniqueIdentifier>{73580b2c-dbe2-435a-b084-2b2c480eabcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Text">
+      <UniqueIdentifier>{5d2611b8-114d-4914-8c28-958b522e0812}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,45 +30,30 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextHistory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextInputField.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DebugDrawer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextEntity.cpp">
+      <Filter>Source Files\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="TextHistory.cpp">
+      <Filter>Source Files\Text</Filter>
+    </ClCompile>
     <ClCompile Include="TextInputController.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="TextInputField.cpp">
+      <Filter>Source Files\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="TextUtils.cpp">
+      <Filter>Source Files\Text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextHistory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextInputField.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextStyle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Updatable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DebugDrawer.h">
@@ -68,14 +62,26 @@
     <ClInclude Include="Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LayoutMacros.h">
+      <Filter>Header Files\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="TextEntity.h">
+      <Filter>Header Files\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="TextHistory.h">
+      <Filter>Header Files\Text</Filter>
+    </ClInclude>
     <ClInclude Include="TextInputController.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Text</Filter>
     </ClInclude>
-    <ClInclude Include="TextMacros.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TextInputField.h">
+      <Filter>Header Files\Text</Filter>
     </ClInclude>
-    <ClInclude Include="WindowMacros.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TextStyle.h">
+      <Filter>Header Files\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="TextUtils.h">
+      <Filter>Header Files\Text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

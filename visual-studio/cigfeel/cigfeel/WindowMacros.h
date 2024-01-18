@@ -1,7 +1,0 @@
-#pragma once
-#define WINDOW_HEIGHT 720
-#define WINDOW_WIDTH 1280
-#define TEXT_HISTORY_WIDTH 800
-#define TEXT_HISTORY_HEIGHT 600
-#define TEXT_HISTORY_X 240
-#define TEXT_HISTORY_Y 0

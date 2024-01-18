@@ -17,14 +17,17 @@ TextInputController::TextInputController()
     sf::Color textColor = sf::Color::White;
     TextStyle textStyle(textFont, textColor, textSize);
 
-    textInputField = new TextInputField(sf::Vector2f(240, 610), textStyle);
+    textInputField = new TextInputField(
+        sf::IntRect(TEXT_INPUT_X, TEXT_INPUT_Y, TEXT_INPUT_PADDING_X, TEXT_INPUT_PADDING_Y),
+        sf::Vector2i(TEXT_INPUT_PADDING_X, TEXT_INPUT_PADDING_Y),
+        textStyle);
 
-    textHistory = new TextHistory(TEXT_HISTORY_BUFFER_SIZE,
-                                  sf::Vector2f(240, 0), 
-                                  textStyle, 
-                                  TEXT_HISTORY_VERTICAL_SPACING,
-                                  sf::IntRect(TEXT_HISTORY_X, TEXT_HISTORY_Y, TEXT_HISTORY_WIDTH, TEXT_HISTORY_HEIGHT),
-                                  sf::Vector2i(TEXT_HISTORY_HORIZONTAL_PADDING, TEXT_HISTORY_VERTICAL_PADDING));
+    textHistory = new TextHistory(
+        sf::IntRect(TEXT_HISTORY_X, TEXT_HISTORY_Y, TEXT_HISTORY_WIDTH, TEXT_HISTORY_HEIGHT),
+        sf::Vector2i(TEXT_HISTORY_PADDING_X, TEXT_HISTORY_PADDING_Y),
+        TEXT_HISTORY_BUFFER_SIZE,
+        textStyle, 
+        TEXT_HISTORY_SPACING_Y);
 }
 
 TextInputController::~TextInputController()

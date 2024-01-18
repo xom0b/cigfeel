@@ -6,7 +6,7 @@
 
 #include "GameManager.h"
 #include "TextInputController.h";
-#include "WindowMacros.h"
+#include "LayoutMacros.h"
 #include "DebugDrawer.h"
 
 

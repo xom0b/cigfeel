@@ -5,8 +5,7 @@
 #include "TextStyle.h"
 #include "TextInputField.h"
 #include "TextHistory.h"
-#include "TextMacros.h"
-#include "WindowMacros.h"
+#include "LayoutMacros.h"
 
 class TextInputController : public Controller, public Updateable, public sf::Drawable
 {
