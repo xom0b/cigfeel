@@ -1,0 +1,8 @@
+<b>This is some bold text</b>
+<i>This is some italics text</i>
+<b>Bold <i>then italics</i></b>
+<i>Italics <b>then bold</b></i>
+<u>This is some underlined text</u>
+<u>This is some <b>bolded</b> then <i>italicized</i>underlined text</u>
+
+This is some dialogue, with an <b>important</b> part to it

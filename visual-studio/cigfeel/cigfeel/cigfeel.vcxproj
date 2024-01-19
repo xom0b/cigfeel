@@ -169,6 +169,9 @@
     <ClInclude Include="Updatable.h" />
     <ClInclude Include="LayoutMacros.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\debug_textformat.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

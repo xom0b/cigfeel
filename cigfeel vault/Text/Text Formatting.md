@@ -2,7 +2,7 @@
 
 Text can be formatted with **bold**, *italics* and size, and color according to the following formatting.
 
-```
+```xml
 <b>this is some bold text</b>
 <i>this is some italicized text</i>
 <c=#FFFFFF>this text will be colored</c>

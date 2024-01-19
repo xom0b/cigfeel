@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 
 #include "Controller.h"
 #include "TextStyle.h"
@@ -12,6 +13,8 @@ class TextInputController : public Controller, public Updateable, public sf::Dra
 	sf::Font* textFont;
 	TextInputField* textInputField;
 	TextHistory* textHistory;
+
+	void debug_loadFormattingTest();
 public:
 	TextInputController();
 	~TextInputController();

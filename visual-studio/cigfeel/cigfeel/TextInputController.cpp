@@ -27,6 +27,8 @@ TextInputController::TextInputController()
         sf::Vector2f(TEXT_HISTORY_PADDING_X, TEXT_HISTORY_PADDING_Y),
         textStyle, 
         TEXT_HISTORY_SPACING_Y);
+
+    debug_loadFormattingTest();
 }
 
 TextInputController::~TextInputController()
@@ -62,4 +64,19 @@ void TextInputController::draw(sf::RenderTarget& target, sf::RenderStates states
 {
     textHistory->draw(target, states);
     textInputField->draw(target, states);
+}
+
+void TextInputController::debug_loadFormattingTest()
+{
+    std::ifstream debugFile("data/debug_textformat.txt");
+    if (!debugFile.is_open())
+    {
+        std::cout << "formatting test file is open, cannot read" << std::endl;
+        return;
+    }
+
+    std::string fileContent((std::istreambuf_iterator<char>(debugFile)), std::istreambuf_iterator<char>());
+    debugFile.close();
+
+    textHistory->add(fileContent);
 }

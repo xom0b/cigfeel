@@ -174,6 +174,9 @@ namespace sfe
         RichText& operator << (const Outline& outline);
         RichText& operator << (const sf::Color& color);
         RichText& operator << (sf::Text::Style style);
+        // CIGFEEL MOD
+        RichText& operator >> (sf::Text::Style style);
+        // END CIGFEEL MOD
         RichText& operator << (const sf::String& string);
 
         //////////////////////////////////////////////////////////////////////////

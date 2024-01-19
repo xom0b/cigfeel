@@ -243,10 +243,21 @@ namespace sfe
     ////////////////////////////////////////////////////////////////////////////////
     RichText& RichText::operator << (sf::Text::Style style)
     {
-        m_currentStyle = style;
+        // CIGFEEL MOD
+        // m_currentStyle = style; 
+        m_currentStyle = sf::Text::Style(m_currentStyle | style);
+        // END CIGFEEL MOD
         return *this;
     }
 
+    // CIGFEEL MOD
+    ////////////////////////////////////////////////////////////////////////////////
+    RichText& RichText::operator >> (sf::Text::Style style)
+    {
+        m_currentStyle = sf::Text::Style(m_currentStyle & ~style);
+        return *this;
+    }
+    // END CIGFEEL MOD
 
     ////////////////////////////////////////////////////////////////////////////////
     std::vector<sf::String> explode(const sf::String& string, sf::Uint32 delimiter)
