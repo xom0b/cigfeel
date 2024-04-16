@@ -1,0 +1,10 @@
+{default}
+this is some default styled text
+{bold}
+this is some bold text
+{italics}
+this is some italic text
+{bold italic}
+this is some italic and bold text
+{default}
+this is back to regular text
