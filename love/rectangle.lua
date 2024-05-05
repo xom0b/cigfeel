@@ -21,6 +21,6 @@ function Rectangle:draw()
 	love.graphics.setColor(self.Color.r, self.Color.g, self.Color.b, self.Color.a)
 	love.graphics.applyTransform(self.transform)
 	love.graphics.rotate(self.rotation)
-	love.graphics.rectangle("line", -self.width/2, -self.height/2, self.width, self.height)
+	love.graphics.rectangle("line", 0, 0, self.width, self.height)
 	love.graphics.pop()
 end

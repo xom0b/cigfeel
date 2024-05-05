@@ -5,22 +5,22 @@ function TextStyler:new()
 	self.boldFont = love.graphics.newFont("assets/fonts/Junicode-Bold.ttf", 24)
 	self.italicFont = love.graphics.newFont("assets/fonts/Junicode-Italic.ttf", 24)
 	self.boldItalicFont = love.graphics.newFont("assets/fonts/Junicode-BoldItalic.ttf", 24)
-	self.currentStyle = 1
+	self.currentStyle = "default"
 	self.maxStyle = 4
 	self.styleTable = 
 	{
-		self.default,
-		self.bold,
-		self.italic,
-		self.boldItalic
+		default = self.default,
+		bold = self.bold,
+		italic = self.italic,
+		boldItalic = self.boldItalic
 	}
 end
 
-function TextStyler:advanceStyle()
-	self.currentStyle = (self.currentStyle % 4) + 1
+function TextStyler:setStyle(style)
+	self.currentStyle = style
 end
 
-function TextStyler:current()
+function TextStyler:drawStyle()
 	local func = self.styleTable[self.currentStyle]
 
 	if (func) then
@@ -33,13 +33,13 @@ end
 function TextStyler:default()
 	love.graphics.setColor(1, 1, 1, 1) -- default color
 	love.graphics.setFont(self.defaultFont) -- default font and size
-	print("setting font to default")
+	--print("setting font to default")
 end
 
 function TextStyler:bold()
 	love.graphics.setColor(1, 1, 1, 1) -- default color
 	love.graphics.setFont(self.boldFont)
-	print("setting font to bold")
+	--print("setting font to bold")
 end
 
 function TextStyler:italic()

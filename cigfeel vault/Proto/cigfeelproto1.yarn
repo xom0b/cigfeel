@@ -1,0 +1,79 @@
+title: Start
+position: -208,-70
+---
+This is a test.
+<<jump OpenerAct1>>
+===
+title: OpenerAct1
+position: 115,219
+---
+Narrator: I can't remember what my father said to my mommy when I died.
+Narrator: I mean, when I passed away.
+Narrator: Mommy told me that nobody dies, they just go somewhere else.
+Narrator: But I'm still here. And everything is different.
+Narrator: Well, at least this time of year I can see Auriga when I get up really high.
+Narrator: Now that I don't have my body, I can be above the smoke, the salt, the "infinite snow."
+Narrator: Oh... right. I remember what my father said...
+Narrator: "Our child died."
+Narrator: ...
+Narrator: There must be something I can do.
+
+Below the boy's apparition, what remained of his essence, a mountain peak recoiled at the sight of the sun.
+Not in fear but in reverence, the thing did bow and break.
+Wherever you looked, a fluttering afterimage spilled over your vision.
+The winding path down the mountain evaporated into the spiral of soot, so thick it laid over everything like a haze.
+Your vision was completely obscured.
+After passing through the rancid cloud, the foothills rolled on, and the sprinting became less painful.
+There remained an unsettling odor, blood and soap. Composting earth, the overturning of death.
+Two torches blazed at the boundaries of your site. Looking directly at them obscured the other.
+Looking directly at the other torch would reveal the other. The two robed figures stood close to one another and their voices were startling.
+They shout, asking you to stop where you stand. You collapse onto the cobblestone path. A sweet smell fills your nose.
+
+<<declare $LoveBonnie = 10>>
+<<declare $LoveRudolph = 10>>
+
+Bonnie: Woah, sweetheart.
+Bonnie: You don't look quite right. What happened to you?
+Rudolph: What the... what is that? It can't even stand.
+Rudolph: Should we put it out?
+    -> Gasp for air.
+        Your lungs, already raw from sprinting down the mountain, choke on the dust in the air.
+        Nothing comes out of your mouth but a hiss.
+        <<set $LoveRudolph = $LoveRudolph - 1>>
+        Behind the curtain: Rudolph loves you this ({$LoveRudolph}) much.
+        Rudolph: Alright, that's enough. Be quiet, let's get out of here.
+        Bonnie: Rudy, I think they're hurt. You could be a little nicer considering...
+        Rudolph: I've had enough already. God's rejects are everywhere.
+        Bonnie: "They may not look how you expect."
+        Bonnie: You said it yourself.
+        Rudolph: I'm already fucking sick of you. 
+        Rudolph: Next time I bring food out here, I don't want your sorry ass here with me.
+        Rudolph: You're such a downer.
+            -> Ask for water.
+                Bonnie: I... don't have any.
+                Rudolph: ... What? Me? My fucking water?
+                Bonnie: Sorry I asked.
+                Rudolph: Yeah. Me too.
+    -> Attempt to blurt out.
+        <<set $LoveBonnie = $LoveBonnie+ 1>>
+        Behind the curtain: Bonnie loves you this ({$LoveBonnie}) much.
+        Bonnie: Hush now, we can talk later.
+Bonnie: Rudy, they's hurt. Do you think you could help them walk?
+Rudolph: Even if I would let that thing touch me, there's no way I'm picking it up.
+Rudolph: It has to be seven feet tall.
+dicegame: this is another test
+<<if $LoveBonnie >10>>
+    Bonnie: Enough. Go get help.
+    Rudolph: Anything to get away from you.
+    Bonnie: Don't listen to him. Oh, are you asleep?
+    <<jump Scene2Act1>>
+<<else>>
+    <<jump Scene2Act1>>
+<<endif>>
+===
+
+title: Scene2Act1
+position: 83,-287
+---
+End for now.
+===

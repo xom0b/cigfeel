@@ -1,0 +1,14 @@
+{
+  "name": "cigfeel",
+  "scripts": {
+    "build": "babel src -d lib",
+    "cigfeel": "cigfeelproto1.yarn"
+  },
+  "version": "a",
+  "description": "a",
+  "main": "a",
+  "repository": "a",
+  "author": "a",
+  "license": "a",
+  "private": null
+}

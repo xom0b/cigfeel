@@ -3,7 +3,7 @@ loader = {}
 function loader.loadClasses()
     -- internal
     utf8 = require "utf8"
-
+    
     -- external
     Object = require "libraries.classic"
 
