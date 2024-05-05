@@ -46,20 +46,45 @@ function TextRect:draw()
 	local xOffset = 0
 	local yOffset = 0
 	for style in string.gmatch(self.text, "%b{}") do
-		print(style)
+		--print(style)
 	end
 	
 	local style = ""
 	local readingStyle = false
 
-	local word = ""
-
 	local letterCount = 0
-	for word in string.gmatch(self.text, "[^b%{}]+") do
-		print(word)
+
+	local styles = {}
+	for style in string.gmatch(self.text, "%b{}") do
+		style = string.gsub(style, '%W', '')
+		table.insert(styles, style)
+		print(style)
 	end
 
+	local blocks = {}
+	for wordIndex in string.gmatch(self.text, "%b{}()") do
+		local bracesIndex = style.find(self.text, "{", wordIndex)
+		local block = ""
+		if bracesIndex ~= nil then
+			block = string.sub(self.text, wordIndex, bracesIndex - 1)
+		else
+			block = string.sub(self.text, wordIndex, #self.text)
+		end
+		table.insert(blocks, block)
+		print(block)
+	end
 
+	local yOffset = 0
+	for i, v in ipairs(blocks) do
+		textStyler:setStyle(styles[i])
+		textStyler:drawStyle()
+		self.textRender:setFont(love.graphics.getFont())
+		self.textRender:setf(blocks[i], self.rect.width, "center")
+		love.graphics.draw(self.textRender, 0, yOffset)
+		yOffset = yOffset + self.textRender:getHeight()
+	end
+
+--[[
 	for c in string.gmatch(self.text, ".") do
 		if c == "{" then
 			readingStyle = true;
@@ -74,14 +99,11 @@ function TextRect:draw()
 					style = style..c
 				end
 			else
-				if string.match(c, "%s") then
-					word = ""
+				if (string.gmatch(c, "%s+")) then
+					self.textRender:set(c)
 				else
-					word = word..c
-					--print(word)
+					self.textRender:setf(c, self.rect.width, "left")
 				end
-
-				self.textRender:set(word)
 				self.textRender:setFont(love.graphics.getFont())
 
 				local newOffset = xOffset + self.textRender:getWidth()
@@ -93,12 +115,12 @@ function TextRect:draw()
 				letterCount = letterCount + 1
 				--love.graphics.draw(self.textRender, xOffset, yOffset + math.sin(love.timer.getTime() * math.pi + letterCount) * 2);
 				
-				self.textRender:set(c)
 				love.graphics.draw(self.textRender, xOffset, yOffset);
 
 				xOffset = xOffset + self.textRender:getWidth()
 			end
 		end
 	end
+]]
 	love.graphics.pop()
 end

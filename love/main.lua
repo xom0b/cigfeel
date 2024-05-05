@@ -3,8 +3,11 @@ function love.load(args, unfilteredArgs)
     loader.loadClasses()
 
     t = TextRect(Rectangle(100, 100, 500, 500))
-    t:setText("{default}this is a test of some {bold}bold text this is some more textuals thatasdfasdf bleeds over {italic} this is some italics text {boldItalic} this is some bold italics text {default} and this is back to regular")
+    --t:setText("{default}this is a test of some {bold}bold text this is some more textuals thatasdfasdf bleeds over {italic} this is some italics text {boldItalic} this is some bold italics text {default}and this is back to regular")
+    t:setText("{default}does this break")
+
 end
+
 
 function love.textinput(text)
     t:appendText(text)
