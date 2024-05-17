@@ -1,5 +1,7 @@
 TextRect = Object:extend()
 
+local lines = {}
+
 function TextRect:new(rect)
 	self.rect = rect
 	self.text = ""
@@ -8,14 +10,52 @@ end
 
 function TextRect:setText(text)
 	self.text = text
+	self:rebuild()
 end
 
 function TextRect:appendText(text)
 	self.text = self.text..text
+	self:rebuild()
 end
 
 function TextRect:appendNewLine()
 	self.text = self.text.."\n"
+end
+
+function TextRect:rebuild()
+	local lineIndex = 1
+	local lineWidth = 0
+
+	lines = {}
+	table.insert(lines, { width = 0, words = {}})
+
+	self.textRender:set("")
+
+	for word in string.gmatch(self.text, "%S+") do
+
+		-- calculate word width
+		self.textRender:add(word)
+		local addWidth = self.textRender:getWidth()
+		lineWidth = lineWidth + addWidth
+
+		-- check if word extends beyond bounds
+		if (lineWidth > self.rect.width) then
+			lineIndex = lineIndex + 1
+			lineWidth = addWidth
+			table.insert(lines, { width = addWidth, words = { word }})
+		else
+			-- add word to line
+			table.insert(lines[lineIndex].words, word)
+			lines[lineIndex].width = lineWidth
+		end
+	end
+
+	for i, v in ipairs(lines) do
+		print(string.format("index: %i | width: %i", i, v.width))
+		for j, b in ipairs(v.words) do
+			print(string.format("word: %s", b))
+		end
+	end
 end
 
 function TextRect:removeText()
@@ -36,6 +76,7 @@ function TextRect:parseStyle(word)
 end
 
 function TextRect:draw()
+
 	self.rect:draw()
 
 	love.graphics.push()
@@ -58,7 +99,6 @@ function TextRect:draw()
 	for style in string.gmatch(self.text, "%b{}") do
 		style = string.gsub(style, '%W', '')
 		table.insert(styles, style)
-		print(style)
 	end
 
 	local blocks = {}
@@ -71,17 +111,16 @@ function TextRect:draw()
 			block = string.sub(self.text, wordIndex, #self.text)
 		end
 		table.insert(blocks, block)
-		print(block)
 	end
 
 	local yOffset = 0
+	local xOffset = 0
 	for i, v in ipairs(blocks) do
 		textStyler:setStyle(styles[i])
 		textStyler:drawStyle()
 		self.textRender:setFont(love.graphics.getFont())
-		self.textRender:setf(blocks[i], self.rect.width, "center")
+		self.textRender:setf(blocks[i], self.rect.width, "left")
 		love.graphics.draw(self.textRender, 0, yOffset)
-		yOffset = yOffset + self.textRender:getHeight()
 	end
 
 --[[
