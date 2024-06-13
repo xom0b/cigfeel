@@ -23,10 +23,13 @@ function TextRect:appendNewLine()
 end
 
 function TextRect:rebuild()
+	lines = {} -- clear current lines
+	self:getStyleBoxes()
+
 	local lineIndex = 1
 	local lineWidth = 0
 
-	lines = {}
+	lines = {} -- clear 
 	table.insert(lines, { width = 0, words = {}})
 
 	self.textRender:set("")
@@ -53,8 +56,48 @@ function TextRect:rebuild()
 	for i, v in ipairs(lines) do
 		print(string.format("index: %i | width: %i", i, v.width))
 		for j, b in ipairs(v.words) do
-			print(string.format("word: %s", b))
+			--print(string.format("word: %s", b))
 		end
+	end
+end
+
+function TextRect:getStyleBoxes()
+	
+	boxes = {}
+	local boxIndex = 1
+
+	local stringIndex = 1
+	while stringIndex < self.text:len() do
+		local openIndex = self.text:find("{", stringIndex)
+		if openIndex then
+			if openIndex > 1 then
+				-- found string
+				local currentString = self.text:sub(stringIndex, openIndex - 1)
+				boxes[boxIndex].string = currentString
+				boxIndex = boxIndex + 1
+			end
+			local closeIndex = self.text:find("}", openIndex)
+			if closeIndex then
+				-- found style
+				local currentStyle = self.text:sub(openIndex, closeIndex)
+				table.insert(boxes, {style = currentStyle, string = ""})
+				stringIndex = closeIndex + 1
+			else
+				print("Error. Uneven style boxes").
+				stringIndex = self.text:len()
+			end
+		else
+			-- final word
+			if stringIndex < self.text:len() then
+				local currentString = self.text:sub(stringIndex, self.text:len())
+				boxes[boxIndex].string = currentString
+			end
+			stringIndex = self.text:len()
+		end
+	end
+
+	for i, box in ipairs(boxes) do
+		print("style: "..box.style.." | string: "..box.string)
 	end
 end
 
@@ -72,8 +115,6 @@ end
 function TextRect:update(dt)
 end
 
-function TextRect:parseStyle(word)
-end
 
 function TextRect:draw()
 

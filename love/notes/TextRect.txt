@@ -1,0 +1,24 @@
+TextRect
+
+Approaches:
+"Rebuild and Draw"
+- When text changes, recalculate dimensions and store it in a list of lines
+- On draw, index through the list of lines and draw words with their appropriate style
+- This way, you only calculate line dimensions once, and draw just becomes indexing styles and text
+
+Rebuild()
+- parse into "style blocks"
+	- associate {style, text}
+- calculate lines
+	- append style blocks together, if they go over, append it to the next line. 
+
+lines = 
+{
+	{ {default, "default text"}, {bold, " bold text"}, {italic, "this text wra"} },
+	{ {italic, "ps to a new line. and then it"}, {default, "continues normally"} }
+} 
+
+Draw()
+- iterate through lines
+- set style
+- draw text

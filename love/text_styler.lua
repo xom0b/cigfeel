@@ -26,7 +26,7 @@ function TextStyler:drawStyle()
 	if (func) then
 		func(self)
 	else
-		print("didn't find a function "..self.currentStyle)
+		--print("didn't find a function "..self.currentStyle)
 	end
 end
 
@@ -45,11 +45,11 @@ end
 function TextStyler:italic()
 	love.graphics.setColor(1, 1, 1, 1) -- default color
 	love.graphics.setFont(self.italicFont)
-	print("setting font to italic")
+	--print("setting font to italic")
 end
 
 function TextStyler:boldItalic()
 	love.graphics.setColor(1, 1, 1, 1) -- default color
 	love.graphics.setFont(self.boldItalicFont)
-	print("setting font to bold italic")
+	--print("setting font to bold italic")
 end
