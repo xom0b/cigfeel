@@ -1,0 +1,25 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+		}
+	],
+	"settings":
+	{
+		"LSP":
+		{
+			"LSP-lua":
+			{
+				"settings":
+				{
+					"Lua.diagnostics.globals":
+					[
+						"textStyler",
+						"love",
+					],
+				},
+			},
+		},
+	},
+}

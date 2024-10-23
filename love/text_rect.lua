@@ -1,11 +1,10 @@
 TextRect = Object:extend()
 
-local lines = {}
-
 function TextRect:new(rect)
 	self.rect = rect
 	self.text = ""
 	self.textRender = love.graphics.newText(love.graphics.getFont(), "")
+	self.lines = {}
 end
 
 function TextRect:setText(text)
@@ -23,16 +22,14 @@ function TextRect:appendNewLine()
 end
 
 function TextRect:rebuild()
-	lines = {} -- clear current lines
 	self:getStyleBoxes()
 
 	local lineIndex = 1
 	local lineWidth = 0
 
-	lines = {} -- clear 
+	local lines = {} -- clear 
 	table.insert(lines, { width = 0, words = {}})
 
-	self.textRender:set("")
 
 	for word in string.gmatch(self.text, "%S+") do
 
@@ -63,10 +60,10 @@ end
 
 function TextRect:getStyleBoxes()
 	
-	boxes = {}
+	local boxes = {}
 	local boxIndex = 1
-
 	local stringIndex = 1
+
 	while stringIndex < self.text:len() do
 		local openIndex = self.text:find("{", stringIndex)
 		if openIndex then
@@ -164,43 +161,5 @@ function TextRect:draw()
 		love.graphics.draw(self.textRender, 0, yOffset)
 	end
 
---[[
-	for c in string.gmatch(self.text, ".") do
-		if c == "{" then
-			readingStyle = true;
-		else
-			if readingStyle then
-				if c == "}" then
-					textStyler:setStyle(style)
-					textStyler:drawStyle()
-					style = ""
-					readingStyle = false
-				else
-					style = style..c
-				end
-			else
-				if (string.gmatch(c, "%s+")) then
-					self.textRender:set(c)
-				else
-					self.textRender:setf(c, self.rect.width, "left")
-				end
-				self.textRender:setFont(love.graphics.getFont())
-
-				local newOffset = xOffset + self.textRender:getWidth()
-				
-				if (newOffset > self.rect.width) then
-					xOffset = 0
-					yOffset = yOffset + offsetLineHeight
-				end
-				letterCount = letterCount + 1
-				--love.graphics.draw(self.textRender, xOffset, yOffset + math.sin(love.timer.getTime() * math.pi + letterCount) * 2);
-				
-				love.graphics.draw(self.textRender, xOffset, yOffset);
-
-				xOffset = xOffset + self.textRender:getWidth()
-			end
-		end
-	end
-]]
 	love.graphics.pop()
 end

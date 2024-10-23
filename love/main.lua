@@ -4,7 +4,7 @@ function love.load(args, unfilteredArgs)
 
     t = TextRect(Rectangle(100, 100, 500, 500))
     --t:setText("{default}this is a test of some {bold}bold text this is some more textuals thatasdfasdf bleeds over {italic} this is some italics text {boldItalic} this is some bold italics text {default}and this is back to regular")
-    t:setText("{default}does this break {italic, something} this is italic {this could be fuck all} and now we're here at the end")
+    --t:setText("{default}does this break {italic, something} this is italic {this could be fuck all} and now we're here at the end")
 
 end
 
@@ -30,6 +30,5 @@ function love.update(dt)
 end
 
 function love.draw()
-
     t:draw()
 end
