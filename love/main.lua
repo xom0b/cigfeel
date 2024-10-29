@@ -3,7 +3,7 @@ function love.load(args, unfilteredArgs)
     loader.loadClasses()
 
     t = TextRect(Rectangle(100, 100, 500, 500))
-    --t:setText("{default}this is a test of some {bold}bold text this is some more textuals thatasdfasdf bleeds over {italic} this is some italics text {boldItalic} this is some bold italics text {default}and this is back to regular")
+    t:setText("{default}this is some default text.{bold}more text, bold this time.{italic}finally, italic styles.{boldItalic}styled, but bold and italics.{default}this is some text that overflows to the next line, on and on and on we have text.")
     --t:setText("{default}does this break {italic, something} this is italic {this could be fuck all} and now we're here at the end")
 
 end
@@ -14,15 +14,7 @@ function love.textinput(text)
 end
 
 function love.keypressed(key)
-    if key == "backspace" then
-        t:removeText()
-    elseif key == "return" then
-        t:appendNewLine()
-    end
-
-    if key == "f1" then
-        textStyler:advanceStyle()
-    end
+    t:keypressed(key)
 end
 
 function love.update(dt)
