@@ -1,6 +1,6 @@
 TextRect = Object:extend()
 
-function TextRect:new(rect)
+function TextRect:new(rect, anchor, spacing)
 	self.rect = rect
 	self.text = ""
 	self.textRender = love.graphics.newText(love.graphics.getFont(), "")
@@ -9,6 +9,10 @@ function TextRect:new(rect)
 	self.wiggleSpeed = 5
 	self.wiggleDivider = 8
 	self.wiggleOffset = math.pi / self.wiggleDivider
+	self.anchor = ternary(anchor == null, "topleft", anchor)
+	self.xdirection = ternary(string.find(self.anchor, "left") ~= nil, 1, -1) -- 1 grows right, -1 grows left
+	self.ydirection = ternary(string.find(self.anchor, "top") ~= nil, 1, -1) -- 1 grows down, -1 grows up
+	self.spacing = spacing
 end
 
 function TextRect:setText(text)
@@ -58,7 +62,7 @@ end
 
 function TextRect:draw()
 	-- TODO: cache styles and blocks
-	
+
 	self.rect:draw()
 
 	love.graphics.push()
@@ -85,9 +89,11 @@ function TextRect:draw()
 		table.insert(blocks, block)
 	end
 
-	local drawX = 0
-	local drawY = 0
+	local drawX = ternary(self.xdirection == 1, 0, self.rect.width)
+	local drawY = ternary(self.ydirection == 1, 0, self.rect.height - self.spacing)
+
 	local charCounter = 0
+	local lineWidth = 0
 
 	-- iterate through "style blocks"
 	for i, v in ipairs(blocks) do
@@ -101,12 +107,13 @@ function TextRect:draw()
 	        -- calculate word width
 	        self.textRender:add(word)
 	        local addWidth = self.textRender:getWidth()
-	        lineWidth = drawX + addWidth
+	        lineWidth = lineWidth + addWidth
 
 	        -- check if word extends beyond bounds
 	        if (lineWidth > self.rect.width) then
-	            drawY = drawY + love.graphics.getFont():getHeight()
-	            drawX = 0
+	            drawY = drawY + self.spacing * self.ydirection
+	            drawX = ternary(self.xdirection == 1, 0, self.rect.width)
+	            lineWidth = addWidth
 	        end
 
 	        -- iterate through characters
@@ -114,17 +121,20 @@ function TextRect:draw()
 	        	self.textRender:set(char)
 
 	        	-- draw character
-	        	love.graphics.draw(self.textRender, 
-	        		drawX + math.sin(love.timer.getTime() * self.wiggleSpeed + charCounter * self.wiggleOffset) * self.wiggleStrength, 
-	        		drawY + math.cos(love.timer.getTime() * self.wiggleSpeed + charCounter * self.wiggleOffset) * self.wiggleStrength)
-	        	drawX = drawX + self.textRender:getWidth()
+	        	love.graphics.draw(self.textRender,
+	        		drawX, 
+	        		--drawX + math.sin(love.timer.getTime() * self.wiggleSpeed + charCounter * self.wiggleOffset) * self.wiggleStrength, 
+	        		drawY) --+ math.cos(love.timer.getTime() * self.wiggleSpeed + charCounter * self.wiggleOffset) * self.wiggleStrength)
+	        	drawX = drawX + self.textRender:getWidth() * self.xdirection
+
 	        	charCounter = charCounter + 1
 	        end
 
 	        -- draw spacing
 	        self.textRender:set(" ")
 	        love.graphics.draw(self.textRender, drawX, drawY)
-	        drawX = drawX + self.textRender:getWidth()
+	        drawX = drawX + self.textRender:getWidth() * self.xdirection
+	        lineWidth = lineWidth + self.textRender:getWidth()
 	    end 
 	end
 

@@ -8,9 +8,11 @@ function loader.loadClasses()
     Object = require "libraries.classic"
 
     -- cigfeel
+    require "utils"
     require "color"
     require "rectangle" -- depends on Color
-    require "text_rect" -- depends on Rectangle
+    require "text_rect" -- depends on Rectangle, utils
     require "text_styler"
+
     textStyler = TextStyler()
 end
