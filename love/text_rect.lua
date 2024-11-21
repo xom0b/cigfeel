@@ -12,7 +12,6 @@ function TextRect:new(rect, anchor, spacing)
 	self.anchor = ternary(anchor == null, "topleft", anchor)
 	self.xdirection = ternary(string.find(self.anchor, "left") ~= nil, 1, -1) -- 1 grows right, -1 grows left
 	self.ydirection = ternary(string.find(self.anchor, "top") ~= nil, 1, -1) -- 1 grows down, -1 grows up
-	self.spacing = spacing
 end
 
 function TextRect:setText(text)
@@ -90,9 +89,7 @@ function TextRect:draw()
 	end
 
 	local drawX = ternary(self.xdirection == 1, 0, self.rect.width)
-	local drawY = ternary(self.ydirection == 1, 0, self.rect.height - self.spacing)
-
-	local charCounter = 0
+	local drawY = ternary(self.ydirection == 1, 0, self.rect.height - textStyler:getHeight("default"))
 	local lineWidth = 0
 
 	-- iterate through "style blocks"
@@ -105,13 +102,12 @@ function TextRect:draw()
 	    for word in string.gmatch(v, "%S+") do
 
 	        -- calculate word width
-	        self.textRender:add(word)
-	        local addWidth = self.textRender:getWidth()
+	        local addWidth = love.graphics.getFont():getWidth(word)
 	        lineWidth = lineWidth + addWidth
 
 	        -- check if word extends beyond bounds
 	        if (lineWidth > self.rect.width) then
-	            drawY = drawY + self.spacing * self.ydirection
+	            drawY = drawY + textStyler:getHeight("default") * self.ydirection
 	            drawX = ternary(self.xdirection == 1, 0, self.rect.width)
 	            lineWidth = addWidth
 	        end
@@ -121,20 +117,15 @@ function TextRect:draw()
 	        	self.textRender:set(char)
 
 	        	-- draw character
-	        	love.graphics.draw(self.textRender,
-	        		drawX, 
-	        		--drawX + math.sin(love.timer.getTime() * self.wiggleSpeed + charCounter * self.wiggleOffset) * self.wiggleStrength, 
-	        		drawY) --+ math.cos(love.timer.getTime() * self.wiggleSpeed + charCounter * self.wiggleOffset) * self.wiggleStrength)
-	        	drawX = drawX + self.textRender:getWidth() * self.xdirection
-
-	        	charCounter = charCounter + 1
+	        	love.graphics.draw(self.textRender, drawX, drawY) 
+	        	drawX = drawX + love.graphics.getFont():getWidth(char) * self.xdirection
 	        end
 
 	        -- draw spacing
 	        self.textRender:set(" ")
 	        love.graphics.draw(self.textRender, drawX, drawY)
-	        drawX = drawX + self.textRender:getWidth() * self.xdirection
-	        lineWidth = lineWidth + self.textRender:getWidth()
+	        drawX = drawX + love.graphics.getFont():getWidth(" ") * self.xdirection
+	        lineWidth = lineWidth + love.graphics.getFont():getWidth(" ")
 	    end 
 	end
 

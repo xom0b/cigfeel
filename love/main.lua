@@ -7,7 +7,7 @@ function love.load(args, unfilteredArgs)
     --t:setText("{default}does this break {italic, something} this is italic {this could be fuck all} and now we're here at the end")
 
     textInput = TextRect(Rectangle(150, 500, 500, 100), "topleft", 28)
-    textInput:setText("{default}>this is where you'll input text")
+    textInput:setText("{default}this is where you'll input text")
 end
 
 function love.textinput(text)

@@ -14,10 +14,18 @@ function TextStyler:new()
 		italic = self.italic,
 		boldItalic = self.boldItalic
 	}
+	self.heightTable = 
+	{
+		default = self.defaultFont:getHeight(" ")
+	}
 end
 
 function TextStyler:setStyle(style)
 	self.currentStyle = style
+end
+
+function TextStyler:getHeight(style)
+	return self.heightTable[style] or 0 
 end
 
 function TextStyler:drawStyle()
@@ -26,7 +34,7 @@ function TextStyler:drawStyle()
 	if (func) then
 		func(self)
 	else
-		--print("didn't find a function "..self.currentStyle)
+		print("didn't find a style for "..self.currentStyle)
 	end
 end
 
