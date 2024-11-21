@@ -13,6 +13,8 @@ function loader.loadClasses()
     require "rectangle" -- depends on Color
     require "text_rect" -- depends on Rectangle, utils
     require "text_styler"
+    require "default_controller"
 
-    textStyler = TextStyler()
+    -- global instances
+    textStyler = TextStyler() 
 end

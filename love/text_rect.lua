@@ -18,12 +18,24 @@ function TextRect:setText(text)
 	self.text = text
 end
 
+function TextRect:getText()
+	return self.text
+end
+
 function TextRect:appendText(text)
 	self.text = self.text..text
 end
 
+function TextRect:prependText(text)
+	self.text = text..self.text
+end
+
 function TextRect:appendNewLine()
 	self.text = self.text.."\n"
+end
+
+function TextRect:prependNewLine()
+	self.text = "\n"..self.text
 end
 
 function TextRect:removeText()
@@ -37,36 +49,30 @@ function TextRect:removeText()
     end
 end
 
-function TextRect:adjustDivider(adjustment)
-	self.wiggleDivider = self.wiggleDivider + adjustment
-	self.wiggleOffset = math.pi / self.wiggleDivider
-end
-
-function TextRect:keypressed(key)
-	if key == "backspace" then
-        self:removeText()
-    elseif key == "return" then
-        self:appendNewLine()
-    end
-
-    if key == "up" then
-    	self:adjustDivider(1)
-	elseif key == "down" then
-		self:adjustDivider(-1)
-	end
-end
-
-function TextRect:update(dt)
-end
-
 function TextRect:draw()
 	-- TODO: cache styles and blocks
 
-	self.rect:draw()
+	--self.rect:draw()
+
+	if string.len(self.text) < 1 then return end
 
 	love.graphics.push()
 	love.graphics.applyTransform(self.rect.transform)
 	love.graphics.setColor(1, 1, 1, 1)
+
+	-- sanitize
+	-- if we detect no styling, insert default style
+	-- if we detect a style, bump it to the front
+	if string.sub(self.text, 1, 1) ~= '{' then
+		local bracesStart = string.find(self.text, '{')
+		local bracesEnd = string.find(self.text, '}')
+		if bracesStart == nil then
+			self.text = "{default}"..self.text -- no braces, insert them
+		else
+			local styleExtracted = string.sub(self.text, bracesStart, bracesEnd)
+			self.text = styleExtracted..string.sub(self.text, 1, bracesStart - 1)..string.sub(self.text, bracesEnd + 1, #self.text)
+		end
+	end
 
 	-- grab styles
 	local styles = {}
@@ -99,21 +105,29 @@ function TextRect:draw()
 		self.textRender:setFont(love.graphics.getFont())
 
 		-- iterate through words
-	    for word in string.gmatch(v, "%S+") do
+	    for word in string.gmatch(v, "[\r]*[\n]*[%S]+[\r]*[\n]*") do --check for newlines on either side of the word
+	    	
+	    	local containsNewLineStart = containsPrefix(word, "\n") or containsPrefix(word, "\r")
+	    	local containsNewLineEnd = containsSuffix(word, "\n") or containsSuffix(word, "\r")
 
-	        -- calculate word width
+	    	-- newlines at beginning of word
+	    	if containsNewLineStart then
+	    		drawY = drawY + textStyler:getHeight("default") * self.ydirection
+	            drawX = ternary(self.xdirection == 1, 0, self.rect.width)
+	    	end
+
+	        -- wrap words
 	        local addWidth = love.graphics.getFont():getWidth(word)
 	        lineWidth = lineWidth + addWidth
 
-	        -- check if word extends beyond bounds
 	        if (lineWidth > self.rect.width) then
 	            drawY = drawY + textStyler:getHeight("default") * self.ydirection
 	            drawX = ternary(self.xdirection == 1, 0, self.rect.width)
 	            lineWidth = addWidth
 	        end
 
-	        -- iterate through characters
-	        for char in string.gmatch(word, ".") do
+	        -- draw characters
+	        for char in string.gmatch(word, "%S") do
 	        	self.textRender:set(char)
 
 	        	-- draw character
@@ -121,11 +135,15 @@ function TextRect:draw()
 	        	drawX = drawX + love.graphics.getFont():getWidth(char) * self.xdirection
 	        end
 
-	        -- draw spacing
-	        self.textRender:set(" ")
-	        love.graphics.draw(self.textRender, drawX, drawY)
-	        drawX = drawX + love.graphics.getFont():getWidth(" ") * self.xdirection
-	        lineWidth = lineWidth + love.graphics.getFont():getWidth(" ")
+	        -- newlines at end of word
+	        if containsNewLineEnd then
+	    		drawY = drawY + textStyler:getHeight("default") * self.ydirection
+	            drawX = ternary(self.xdirection == 1, 0, self.rect.width)
+	    	else
+	    		-- advance whitespaces
+		        drawX = drawX + love.graphics.getFont():getWidth(" ") * self.xdirection
+		        lineWidth = lineWidth + love.graphics.getFont():getWidth(" ")
+		    end
 	    end 
 	end
 
