@@ -34,7 +34,7 @@ function TextStyler:drawStyle()
 	if (func) then
 		func(self)
 	else
-		--print("didn't find a style for "..self.currentStyle)
+		print("didn't find a style for "..self.currentStyle)
 	end
 end
 

@@ -9,7 +9,7 @@ function DefaultController:new()
                                      	  love.graphics.getWidth() - padding_w * 2, 
                                      	  love.graphics.getHeight() - padding_b), "bottomleft", 28)
 
-    --self.textHistory:setText("{default}this \nis some default\ntext.{bold}more text, bold this time.{italic}finally, italic styles.{boldItalic}styled, but bold and italics.{default}this is some text that overflows to the next line, on and on and on we have text.")
+    self.textHistory:setText("{default}this \nis some default\ntext. {bold}more text, bold this time. {italic}finally, italic styles. {boldItalic}styled, but bold and italics. {default}this is some text that overflows to the next line, on and on and on we have text.")
 
     self.textInput = TextRect(Rectangle(padding_w, 
                                    		love.graphics.getHeight() - padding_b, 

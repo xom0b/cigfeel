@@ -50,8 +50,6 @@ function TextRect:removeText()
 end
 
 function TextRect:draw()
-	-- TODO: cache styles and blocks
-
 	--self.rect:draw()
 
 	if string.len(self.text) < 1 then return end
@@ -60,64 +58,53 @@ function TextRect:draw()
 	love.graphics.applyTransform(self.rect.transform)
 	love.graphics.setColor(1, 1, 1, 1)
 
-	-- sanitize
-	-- if we detect no styling, insert default style
-	-- if we detect a style, bump it to the front
-	if string.sub(self.text, 1, 1) ~= '{' then
-		local bracesStart = string.find(self.text, '{')
-		local bracesEnd = string.find(self.text, '}')
-		if bracesStart == nil then
-			self.text = "{default}"..self.text -- no braces, insert them
-		else
-			local styleExtracted = string.sub(self.text, bracesStart, bracesEnd)
-			self.text = styleExtracted..string.sub(self.text, 1, bracesStart - 1)..string.sub(self.text, bracesEnd + 1, #self.text)
-		end
-	end
-
-	-- grab styles
-	local styles = {}
-	for style in string.gmatch(self.text, "%b{}") do -- match braces
-		local style = string.gsub(style, '%W', '') -- remove the braces (remove non-alphanumeric chars)
-		table.insert(styles, style)
-	end
-
-	-- grab style blocks
-	local blocks = {}
-	for wordIndex in string.gmatch(self.text, "%b{}()") do
-		local bracesIndex = string.find(self.text, "{", wordIndex)
-		local block = ""
-		if bracesIndex ~= nil then
-			block = string.sub(self.text, wordIndex, bracesIndex - 1)
-		else
-			block = string.sub(self.text, wordIndex, #self.text)
-		end
-		table.insert(blocks, block)
-	end
-
 	local drawX = ternary(self.xdirection == 1, 0, self.rect.width)
 	local drawY = ternary(self.ydirection == 1, 0, self.rect.height - textStyler:getHeight("default"))
-	local lineWidth = 0
 
-	-- iterate through "style blocks"
-	for i, v in ipairs(blocks) do
-		textStyler:setStyle(styles[i])
-		textStyler:drawStyle()
-		self.textRender:setFont(love.graphics.getFont())
+	local currentStyle = "default"
+	textStyler:setStyle(currentStyle)
+	textStyler:drawStyle()
+    self.textRender:setFont(love.graphics.getFont())
 
-		-- iterate through words
-	    for word in string.gmatch(v, "[\r]*[\n]*[%S]+[\r]*[\n]*") do --check for newlines on either side of the word
-	    	
-	    	local containsNewLineStart = containsPrefix(word, "\n") or containsPrefix(word, "\r")
-	    	local containsNewLineEnd = containsSuffix(word, "\n") or containsSuffix(word, "\r")
+    -- break into lines
+    -- break into words
+    -- extract styles from words
+    -- check if words extend bounds
+    -- draw characters
+    -- NOTE: this requires all style tags belong to the same "word"
+    -- ex: "{default}default text. {bold}bold text" 
+    -- incorrect ex: "{default} default text.{bold} bold text"
+	for line in string.gmatch(self.text, "([^\r\n]+)") do
 
-	    	-- newlines at beginning of word
-	    	if containsNewLineStart then
-	    		drawY = drawY + textStyler:getHeight("default") * self.ydirection
-	            drawX = ternary(self.xdirection == 1, 0, self.rect.width)
-	    	end
+		local lineWidth = 0
+		for word in string.gmatch(line, "%S+") do
 
-	        -- wrap words
-	        local addWidth = love.graphics.getFont():getWidth(word)
+			local sanitizedWord = ""
+
+			charIndex = 1
+			while charIndex <= string.len(word) do
+				-- parse style
+				currentChar = word:sub(charIndex, charIndex)
+				if currentChar == '{' then 
+					closedIndex = string.find(word, "}", charIndex)
+					if closedIndex == nil then 
+						print("couldn't parse style")
+					else
+						currentStyle = word:sub(charIndex + 1, closedIndex - 1)
+						charIndex = closedIndex
+
+						textStyler:setStyle(currentStyle)
+						textStyler:drawStyle()
+				        self.textRender:setFont(love.graphics.getFont())
+					end
+				else
+					sanitizedWord = sanitizedWord..currentChar
+				end
+
+				charIndex = charIndex + 1
+			end
+
+			local addWidth = love.graphics.getFont():getWidth(sanitizedWord)
 	        lineWidth = lineWidth + addWidth
 
 	        if (lineWidth > self.rect.width) then
@@ -127,25 +114,22 @@ function TextRect:draw()
 	        end
 
 	        -- draw characters
-	        for char in string.gmatch(word, "%S") do
+	        for char in string.gmatch(sanitizedWord, "%S") do
 	        	self.textRender:set(char)
-
-	        	-- draw character
 	        	love.graphics.draw(self.textRender, drawX, drawY) 
 	        	drawX = drawX + love.graphics.getFont():getWidth(char) * self.xdirection
 	        end
 
-	        -- newlines at end of word
-	        if containsNewLineEnd then
-	    		drawY = drawY + textStyler:getHeight("default") * self.ydirection
-	            drawX = ternary(self.xdirection == 1, 0, self.rect.width)
-	    	else
-	    		-- advance whitespaces
-		        drawX = drawX + love.graphics.getFont():getWidth(" ") * self.xdirection
-		        lineWidth = lineWidth + love.graphics.getFont():getWidth(" ")
-		    end
-	    end 
-	end
+	        -- advance whitespaces
+	        drawX = drawX + love.graphics.getFont():getWidth(" ") * self.xdirection
+	        lineWidth = lineWidth + love.graphics.getFont():getWidth(" ")
 
+		end
+
+		-- advance newline
+        drawY = drawY + textStyler:getHeight("default") * self.ydirection
+		drawX = 0
+	end
+	
 	love.graphics.pop()
 end
